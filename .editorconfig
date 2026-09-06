@@ -1,0 +1,25 @@
+# Editor configuration settings -- https://editorconfig.org/
+#
+# See the documentation for details on plugins for your editor.
+#
+# SPDX-FileCopyrightText: AirSonar contributors
+# SPDX-License-Identifier: CC0-1.0
+
+root = true
+
+[*]
+charset = utf-8
+indent_size = 4
+indent_style = space
+insert_final_newline = false
+max_line_length = 88
+trim_trailing_whitespace = true
+
+[*.md]
+indent_size = 2
+
+[*.toml]
+indent_size = 2
+
+[*.yaml]
+indent_size = 2

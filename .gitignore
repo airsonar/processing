@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: AirSonar contributors
+# SPDX-License-Identifier: CC0-1.0
+
+# Build system artefacts.
+build/
+dist/
+*.egg-info/
+
+# Python compiled files.
+__pycache__/

@@ -1,0 +1,69 @@
+# SPDX-FileCopyrightText: AirSonar contributors
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+
+[project]
+name = "airsonar-processing"
+description = "Signal processing for the AirSonar project"
+dynamic = ["version"]
+
+requires-python = ">=3.12"
+dependencies = [
+  "numpy",
+  "xarray",
+]
+
+[project.optional-dependencies]
+dev = [
+  "airsonar-processing[doc]",
+  "mypy",
+  "ruff",
+]
+
+doc = [
+  "zensical",
+]
+
+
+#
+# Build configuration.
+#
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+fallback_version = "0.1.0"
+tag_regex = "^v(?P<version>\\d+\\.\\d+\\.\\d+)$"
+
+
+#
+# Linting tools.
+#
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+
+# Enabled linting tools.
+select = [
+  "E",    # pycodestyle errors
+  "F",    # pyflakes
+  "I",    # isort
+  "NPY",  # NumPy-specific checks
+  "W",    # pycodestyle warnings
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-sort-within-sections = true
+
+
+#
+# Static type checking.
+#
+
+[tool.mypy]
+check_untyped_defs = true
+explicit_package_bases = true
