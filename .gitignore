@@ -8,3 +8,10 @@ dist/
 
 # Python compiled files.
 __pycache__/
+
+# Documentation outputs.
+site/
+
+# Test outputs.
+.coverage
+tests/coverage

@@ -1,0 +1,65 @@
+# SPDX-FileCopyrightText: AirSonar contributors
+# SPDX-License-Identifier: CC0-1.0
+
+[project]
+site_name = "AirSonar processing library"
+
+nav = [
+  {"Introduction" = "index.md"},
+  {"API reference" = [
+    "api/pdm_to_pressure.md",
+  ]},
+]
+
+
+[project.theme]
+features = [
+  "content.code.copy",
+  "content.footnote.tooltips",
+  "navigation.tabs",
+]
+
+# Palette toggle for automatic mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+# Palette toggle for light mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+# Palette toggle for dark mode
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+
+
+[project.plugins.mkdocstrings]
+default_handler = "python"
+
+[project.plugins.mkdocstrings.handlers.python]
+paths = [
+  "src"
+]
+inventories = [
+  "https://docs.python.org/3/objects.inv",
+  "https://numpy.org/doc/stable/objects.inv",
+  "https://docs.scipy.org/doc/scipy/objects.inv",
+  "https://docs.xarray.dev/en/stable/objects.inv",
+]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "numpy"
+separate_signature = true
+show_if_no_docstring = true
+show_overloads = true
+show_root_heading = false
+show_signature_annotations = false
+signature_crossrefs = true
+summary = true

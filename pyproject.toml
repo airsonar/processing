@@ -14,13 +14,19 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-  "airsonar-processing[doc]",
+  "airsonar-processing[docs,tests]",
   "mypy",
   "ruff",
 ]
 
-doc = [
+docs = [
+  "mkdocstrings-python",
   "zensical",
+]
+
+tests = [
+  "pytest",
+  "pytest-cov",
 ]
 
 
@@ -67,3 +73,32 @@ force-sort-within-sections = true
 [tool.mypy]
 check_untyped_defs = true
 explicit_package_bases = true
+
+
+#
+# Unit Testing.
+#
+
+[tool.coverage.report]
+exclude_lines=[
+    # Restore the original no cover exclusion marker.
+    "pragma: no cover",
+
+    # Lines only intended when static type checking.
+    "^\\s*if TYPE_CHECKING:\\s*$",
+
+    # Type hint overloads.
+    "^\\s*@(typing.)?overload\\s*$",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "--cov=airsonar.processing",
+    "--cov-branch",
+    "--cov-report=html:tests/coverage",
+]
+testpaths = [
+    "tests",
+]
+xfail_strict = true
