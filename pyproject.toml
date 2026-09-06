@@ -8,7 +8,9 @@ dynamic = ["version"]
 
 requires-python = ">=3.12"
 dependencies = [
+  "dask",
   "numpy",
+  "scipy",
   "xarray",
 ]
 
@@ -17,6 +19,7 @@ dev = [
   "airsonar-processing[docs,tests]",
   "mypy",
   "ruff",
+  "scipy-stubs",
 ]
 
 docs = [
