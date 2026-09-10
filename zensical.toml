@@ -12,6 +12,16 @@ nav = [
   ]},
 ]
 
+extra_javascript = [
+  "javascript/katex.js",
+  "https://unpkg.com/katex@0/dist/katex.min.js",
+  "https://unpkg.com/katex@0/dist/contrib/auto-render.min.js",
+]
+
+extra_css = [
+  "https://unpkg.com/katex@0/dist/katex.min.css",
+]
+
 
 [project.theme]
 features = [
@@ -39,6 +49,10 @@ media = "(prefers-color-scheme: dark)"
 scheme = "slate"
 toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
+
+
+[project.markdown_extensions]
+pymdownx.arithmatex.generic = true
 
 
 [project.plugins.mkdocstrings]
