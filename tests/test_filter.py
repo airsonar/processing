@@ -170,3 +170,63 @@ def test_fir_least_squares_errors():
         filter.fir_least_squares(s, 10e3, 45e3, 6e3)
     with pytest.raises(ValueError, match="low_edge.+smaller than.+transition"):
         filter.fir_least_squares(s, 5e3, 40e3, 6e3)
+
+
+@pytest.mark.parametrize("use_complex", [False, True])
+@pytest.mark.parametrize("chunked", [False, True])
+def test_matched_filter_lfm(use_complex: bool, chunked: bool):
+    # Signal parameters.
+    fs = 50e3
+    f_start = 10e3
+    B = 15e3
+    duration = 0.02
+    K = B / duration
+
+    # Function to generate traces.
+    def s(t):
+        phase = 2 * np.pi * f_start * t + np.pi * K * t**2
+        if use_complex:
+            out = np.exp(1j * phase)
+        else:
+            out = np.sin(phase)
+
+        out[t < 0] = 0
+        out[t > duration] = 0
+        return out
+
+    # Generate the signal plus three data traces with different delays.
+    t_signal = np.arange(0, 2e-3, 1 / fs)
+    signal = xr.DataArray(s(t_signal), coords=[("time", t_signal)])
+    t_data = np.arange(0, 10e-3, 1 / fs)
+    data = xr.DataArray(
+        [s(t_data - 5e-3), s(t_data - 4e-3), s(t_data - 6e-3)],
+        coords=[("ping", [1, 2, 3]), ("time", t_data)],
+    )
+
+    # Apply the matched filter.
+    if chunked:
+        matched = filter.matched_filter(data.chunk(ping=2), signal)
+        assert matched.chunksizes == {"ping": (2, 1), "time": (len(t_data),)}
+        matched.load()
+    else:
+        matched = filter.matched_filter(data, signal)
+    assert not matched.chunksizes
+
+    # Check the peaks of the output occur at the expected times.
+    expected_t = xr.DataArray([5e-3, 4e-3, 6e-3], coords=[data["ping"]])
+    xr.testing.assert_allclose(
+        matched["time"][np.abs(matched).argmax(["time"])].reset_coords(drop=True),  # type:ignore[call-overload]
+        expected_t,
+    )
+
+    # Check the peak magnitudes correspond to the energy in the signal.
+    signal_e = (np.abs(signal) ** 2).sum()
+    assert np.allclose(np.abs(matched).max("time"), signal_e)  # type:ignore[call-overload]
+
+
+def test_matched_filter_error():
+    data = xr.DataArray(np.zeros(100), coords=[("time", np.arange(100))])
+    signal = xr.DataArray(np.zeros(10), coords=[("time", np.arange(10))])
+
+    with pytest.raises(ValueError, match="unknown method"):
+        filter.matched_filter(data, signal, method="super_extra_fast")  # type:ignore[arg-type]
