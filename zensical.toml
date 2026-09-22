@@ -9,6 +9,7 @@ nav = [
   {"API reference" = [
     "api/filter.md",
     "api/pdm_to_pressure.md",
+    "api/reconstruct.md",
     "api/signals.md",
   ]},
 ]
