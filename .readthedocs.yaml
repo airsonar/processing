@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: AirSonar contributors
+# SPDX-License-Identifier: CC0-1.0
+#
+# Read the Docs configuration file for Zensical projects
+# https://docs.readthedocs.com/platform/latest/intro/zensical.html
+
+version: 2
+
+build:
+  os: ubuntu-lts-latest
+  tools:
+    python: latest
+  jobs:
+    install:
+      - pip install .[docs]
+    build:
+      html:
+        - zensical build
+    post_build:
+      - mkdir -p $READTHEDOCS_OUTPUT/html/
+      - cp --recursive site/* $READTHEDOCS_OUTPUT/html/
